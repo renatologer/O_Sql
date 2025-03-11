@@ -1,0 +1,43 @@
+Use AdventureWorks2017;
+GO
+DECLARE @existe INT;
+DECLARE @Usuario VARCHAR(50);
+SET @Usuario = '';
+
+SELECT @existe = COUNT(1)
+FROM dbo.O_funci_Renato_teste_Cadastro_Base
+WHERE Usuario = @Usuario;
+
+-- (Usuario, Senha, IT, Nome, email,Contratacao, Situacao)
+
+IF @existe = 0
+   BEGIN
+    INSERT INTO dbo.O_funci_Renato_teste_Cadastro_Base
+    (Usuario, Senha, IT, Nome, email,Contratacao, Situacao)
+    SELECT
+        CONCAT('T', id),
+        '1' AS Senha,
+        '1' AS IT,
+        name AS Nome,      
+        email AS email,
+        Dt_registro AS Data_Contratacao,
+        'Ativo' AS Situacao
+       
+       
+    FROM
+        [AdventureWorks2017].[dbo].[O_funci_Renato_teste]
+        WHERE id =(RIGHT(@Usuario, LEN(@Usuario) - 1));
+        SELECT COUNT(1) FROM dbo.O_funci_Renato_teste_Cadastro_Base
+        WHERE Usuario = @Usuario;
+        IF @existe = 1
+       
+            SELECT 'Foi copiado com sucesso';
+       ELSE
+       
+          SELECT 'Erro ao inserir dados';
+
+END
+ELSE
+BEGIN
+    SELECT 'Usuário já existe';
+END
